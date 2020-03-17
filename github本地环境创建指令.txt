@@ -1,0 +1,14 @@
+
+cd E:\mygithub\computer network    //切换到创建项目目录
+git config --global user.name 'cn'                   //创建用户名
+git config --global user.email 'u288@outlook.com'           //创建用户邮箱
+git config -l                                            //检查位置保存
+git init                                                 //准备开始操作
+git remote add origin https://github.com/morvan88/computer-network.git //本地文件指向github
+
+
+-----------------------------------------------------------------------------------------
+git status   //查看本地文件目录状态
+git add *   //更改本地文件目录生效
+git commit -m 'first_commit'              //更改本地文件目录生效
+git push -u origin master                //推送上github
