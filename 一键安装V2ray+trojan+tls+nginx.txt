@@ -1,0 +1,96 @@
+本次安装的脚本大部来自网络：
+1,vps
+2，域名申请
+3，域名解析到vps
+之后我们登录并在vps上操作了
+
+A、校对系统时间
+-------------------------------------------------------------------------------------------
+date -R
+cp /usr/share/zoneinfo/Asia/Shanghai/etc/localtime                  
+-------------------------------更正和本地（上海）时间一致---------------------------------------
+
+B、安装BBR
+
+wget -N --no-check-certificate "https://raw.githubusercontent.com/chiakge/Linux-NetSpeed/master/tcp.sh" && chmod +x tcp.sh && ./tcp.sh   
+
+C、安装v2ray:
+
+wget -N --no-check-certificate -q -O install.sh "https://raw.githubusercontent.com/wulabing/V2Ray_ws-tls_bash_onekey/master/install.sh" && chmod +x install.sh && bash install.sh
+
+D、安装trojan:
+
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/trojan-gfw/trojan-quickstart/master/trojan-quickstart.sh)"
+
+修改trojan配置文件（把下面文本全部替代原来的文本）：/usr/local/etc/trojan/config.json
+
+"local_port": 8080,这项8080可以替换自己的端口
+"password": [
+        "trojan"   这项双引号内的trojan可以替换自己的（密码）
+
+---------------------------------------------------------------------------------------
+
+{
+    "run_type": "server",
+    "local_addr": "0.0.0.0",
+    "local_port": 8080,
+    "remote_addr": "127.0.0.1",
+    "remote_port": 80,
+    "password": [
+        "trojan"
+    ],
+    "log_level": 1,
+    "ssl": {
+        "cert": "/data/v2ray.crt",
+        "key": "/data/v2ray.key",
+        "key_password": "",
+        "cipher": "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384",
+        "cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384",
+        "prefer_server_cipher": true,
+        "alpn": [
+            "http/1.1"
+        ],
+        "reuse_session": true,
+        "session_ticket": false,
+        "session_timeout": 600,
+        "plain_http_response": "",
+        "curves": "",
+        "dhparam": ""
+    },
+    "tcp": {
+        "prefer_ipv4": false,
+        "no_delay": true,
+        "keep_alive": true,
+        "reuse_port": false,
+        "fast_open": false,
+        "fast_open_qlen": 20
+    },
+    "mysql": {
+        "enabled": false,
+        "server_addr": "127.0.0.1",
+        "server_port": 3306,
+        "database": "trojan",
+        "username": "trojan",
+        "password": ""
+    }
+}
+----------------------------------------------------------------------------------------
+E、开启Trojan服务
+
+systemctl start trojan   
+
+F、设置Trojan开机自启动
+
+systemctl enable trojan
+————————————————————————————————————————
+v2ray客户端:在安装v2ray完时显示的配置，或扫苗维码或复制连接，也可以打开配置文件查
+trojan客户端:地址：域名（ss.morvan88.ml）
+                    端口：刚才设的端口（8080）
+                    密码：刚才设的密码（trojan88)
+
+
+本次安装完成
+
+查看Trojan状态
+
+systemctl status trojan
